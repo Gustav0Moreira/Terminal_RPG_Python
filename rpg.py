@@ -142,9 +142,11 @@ def Criar_Personagem():
         return main_nome                    
 
     def Skills():
+        
         print("Agora será rolado 3 valores, em seguida, você poderá decidir se manterá o rolamento atual ou se solicitará um novo rolamento.\nOBS: Lembre-se que você ainda terá 6 pontos para distribuir entre estes rolamentos")
         time.sleep(3)
         control_menu = True
+        control_menu3 = True
         while control_menu:
             control_menu2 = True
             dado1 = Dado()
@@ -156,11 +158,11 @@ def Criar_Personagem():
                 print("Gerando o dado...")
                 time.sleep(1)
                 print("""
-                        ----------
-                        |        |
-                        |   %s    |
-                        |        |
-                        ----------
+                        -----------
+                        |         |
+                        |    %s    |
+                        |         |
+                        -----------
                       
                       """ %(i))
                 time.sleep(1)
@@ -192,9 +194,155 @@ def Criar_Personagem():
                         time.sleep(1)
                     else:
                         print("Valor inválido, vamos tentar novamente.")
-        
+        print("Vamos atribuir os valores para seus atributos:")
+        while control_menu3:
+            lock_test = False
+            dic_atributos = {
+            "ataque" : None,
+            "defesa" : None,
+            "agilidade" : None,
+            "pontos de vida" : None
+            }
+            try:
+                decisao_atributo = int(input("O primeiro rolamento (%s) vai para qual atributo?: \n1 - Ataque\n2 - Defesa\n3 - Agilidade\n" %(lista_dados[0])))
+            except ValueError: 
+                print("Digite um número entre 1,2 ou 3")
+            except Exception as error2:
+                print(error2) 
+                print("Ação inválida")
+            else:
+                if decisao_atributo == 1:
+                    dic_atributos["ataque"] = lista_dados[0]
+                    print("Ataque = %s" %(dic_atributos["ataque"]))
+                    try:
+                        decisao_atributo2 = int(input("O segundo rolamento (%s) vai para qual atributo?: \n1 - Defesa\n2 - Agilidade\n"%(lista_dados[1])) )
+                    except ValueError: 
+                        print("Digite um número entre 1 ou 2")
+                    except Exception as error3:
+                        print(error3) 
+                        print("Ação inválida")
+                    else:
+                        if decisao_atributo2 == 1:
+                            dic_atributos["defesa"] = lista_dados[1]
+                            dic_atributos["agilidade"] = lista_dados[2]
+                            print("Defesa = %s" %(dic_atributos["defesa"]))
+                            time.sleep(1)
+                            print("O terceiro dado foi atribuido a Agilidade")
+                            print("Agilidade = %s" %(dic_atributos["agilidade"]))
+                        elif decisao_atributo2 == 2:
+                            dic_atributos["agilidade"] = lista_dados[1]
+                            dic_atributos["defesa"] = lista_dados[2]
+                            print("Agilidade = %s" %(dic_atributos["agilidade"]))
+                            time.sleep(1)
+                            print("O terceiro dado foi atribuido a Defesa")
+                            print("Defesa = %s" %(dic_atributos["defesa"]))
+                        else:
+                            print("Valor inválido")
+                elif decisao_atributo == 2:
+                    dic_atributos["defesa"] = lista_dados[0]
+                    print("Defesa = %s" %(dic_atributos["defesa"]))
+                    try:
+                        decisao_atributo2 = int(input("O segundo rolamento (%s) vai para qual atributo?: \n1 - Ataque\n2 - Agilidade\n" %(lista_dados[1])) )
+                    except ValueError: 
+                        print("Digite um número entre 1 ou 2")
+                    except Exception as error3:
+                        print(error3) 
+                        print("Ação inválida")
+                    else:
+                        if decisao_atributo2 == 1:
+                            dic_atributos["ataque"] = lista_dados[1]
+                            dic_atributos["agilidade"] = lista_dados[2]
+                            print("Ataque = %s" %(dic_atributos["ataque"]))
+                            time.sleep(1)
+                            print("O terceiro dado foi atribuido a Agilidade")
+                            print("Agilidade = %s" %(dic_atributos["agilidade"]))
 
-    Skills()
+                        elif decisao_atributo2 == 2:
+                            dic_atributos["agilidade"] = lista_dados[1]
+                            dic_atributos["ataque"] = lista_dados[2]
+                            print("Agilidade = %s" %(dic_atributos["agilidade"]))
+                            time.sleep(1)
+                            print("O terceiro dado foi atribuido a Ataque")
+                            print("Ataque = %s" %(dic_atributos["ataque"]))
+
+                        else:
+                            print("Valor inválido")
+                elif decisao_atributo == 3:
+                    dic_atributos["agilidade"] = lista_dados[0]
+                    print("Agilidade = %s" %(dic_atributos["agilidade"]))
+                    try:
+                        decisao_atributo2 = int(input("O segundo rolamento (%s) vai para qual atributo?: \n1 - Ataque\n2 - Defesa\n" %(lista_dados[1])))
+                    except ValueError: 
+                        print("Digite um número entre 1 ou 2")
+                    except Exception as error3:
+                        print(error3) 
+                        print("Ação inválida")
+                    else:
+                        if decisao_atributo2 == 1:
+                            dic_atributos["ataque"] = lista_dados[1]
+                            dic_atributos["defesa"] = lista_dados[2]
+                            print("Ataque = %s" %(dic_atributos["ataque"]))
+                            time.sleep(1)
+                            print("O terceiro dado foi atribuido a Defesa")
+                            print("Defesa = %s" %(dic_atributos["defesa"]))
+
+                        elif decisao_atributo2 == 2:
+                            dic_atributos["defesa"] = lista_dados[1]
+                            dic_atributos["ataque"] = lista_dados[2]
+                            print("Defesa = %s" %(dic_atributos["defesa"]))
+                            time.sleep(1)
+                            print("O terceiro dado foi atribuido a Ataque")
+                            print("Ataque = %s" %(dic_atributos["ataque"]))
+
+                        else:
+                            print("Valor inválido")
+            try:
+                total_pontos_vida = ((dic_atributos["agilidade"] + dic_atributos["ataque"] + dic_atributos["defesa"]) / 3 + 10)
+            except TypeError:
+                print("Valor inoperante!")
+            except Exception:
+                print("Ação inválida.")
+            else:
+                dic_atributos["pontos de vida"] = int(total_pontos_vida)
+                print("""
+                                    -------------------
+                                         RESULTADO 
+                                    -------------------
+                                Ataque = %s
+                                Defesa = %s
+                                Agilidade = %s
+                                Pontos de Vida = %s
+                    
+                    """ %(dic_atributos["ataque"], dic_atributos["defesa"], dic_atributos["agilidade"], dic_atributos["pontos de vida"]))
+                lock_test = True
+            while lock_test:    
+                try:
+                    decisao_resultado = int(input("Está de acordo com o resultado?:\n1 - Sim, estou satisfeito\n2 - Não, me deixe tentar novamente\n"))
+                except ValueError:
+                    print("Digite um número entre 1 e 2")
+                except Exception as error:
+                    print(error)
+                    print("Ação Inválida.")
+                else:
+                    if decisao_resultado == 1:
+                        control_menu3 = False
+                        lock_test = False
+                        control_menu = False
+                    elif decisao_resultado == 2:
+                        print("Certo, vamos atribuir novamente!")
+                        lock_test = False
+                        time.sleep(3)
+                    else:
+                        print("Digite um número válido.")
+        return dic_atributos
+
+
+                            
+
+
+    habits = Skills()
+
+    print(habits)
 
     print("""
                                 -------------------
