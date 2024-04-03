@@ -4,7 +4,7 @@ import math
 
 
 class Player(object):
-    def __init__(self, name, attack, hp_base, defense, agil):
+    def __init__(self, hp_base, name, attack, defense, agil):
         self.name = name
         self.attack = attack
         self.hp_base = hp_base
@@ -50,7 +50,23 @@ def Dado():
     return valor
 
 def Criar_Personagem():
+    
     def Nome():
+
+        print("""
+                                -------------------
+                                CRIE SEU PERSONAGEM
+                                -------------------
+            Seu personagem é constituido de 4 informações, sendo:
+            -Pontos de Vida
+            -Ataque
+            -Defesa
+            -Agilidade
+            
+            Estes atributos são definidos através da rolagem de números
+            aleatórios de 1 a 6.
+            Antes de começarmos, escolha o nome do seu personagem:
+            """)
 
         control_menu = True
         main_nome = None
@@ -140,9 +156,21 @@ def Criar_Personagem():
                                 else:
                                     print("Digite um número válido")
         return main_nome                    
-
     def Skills():
-        
+        print("""
+                                -------------------
+                                 ROLANDO ATRIBUTOS
+                                -------------------
+            Agora vamos rolar seus 3 atributos de habilidades, sendo eles:
+            -Ataque (Será utilizado para definir o valor de seu dano, somando mais ao bonus de armas que você utilizar)
+            -Defesa (Será utilizado para definir o valor de sua esquiva ao ser atacado, somando mais ao bonus de armaduras que utilizar)
+            -Agilidade (Será utilizado para definir a ordem de ação em combante, somando mais ao bonus de itens que utilizar)
+          
+            No final, seus Pontos de Vida serão definidos pela média de seus atributos mais 10 pontos.
+
+
+          """)
+        time.sleep(3)
         print("Agora será rolado 3 valores, em seguida, você poderá decidir se manterá o rolamento atual ou se solicitará um novo rolamento.\nOBS: Lembre-se que você ainda terá 6 pontos para distribuir entre estes rolamentos")
         time.sleep(3)
         control_menu = True
@@ -325,9 +353,11 @@ def Criar_Personagem():
                     print("Ação Inválida.")
                 else:
                     if decisao_resultado == 1:
+                        print("Perfeito, vamos prosseguir!")
                         control_menu3 = False
                         lock_test = False
                         control_menu = False
+                        time.sleep(3)
                     elif decisao_resultado == 2:
                         print("Certo, vamos atribuir novamente!")
                         lock_test = False
@@ -335,54 +365,13 @@ def Criar_Personagem():
                     else:
                         print("Digite um número válido.")
         return dic_atributos
-
-
-                            
-
-
-    habits = Skills()
-
-    print(habits)
-
-    print("""
-                                -------------------
-                                CRIE SEU PERSONAGEM
-                                -------------------
-            Seu personagem é constituido de 4 informações, sendo:
-            -Pontos de Vida
-            -Ataque
-            -Defesa
-            -Agilidade
-            
-            Estes atributos são definidos através da rolagem de números
-            aleatórios de 1 a 6 e o complemento de 6 pontos divisiveis para agregar no total.
-            Antes de começarmos, escolha o nome do seu personagem:
-            """)
-    
     nome = Nome()
+    atributos = Skills()
+    lista_retorno = [atributos["pontos de vida"], nome, atributos["ataque"], atributos["defesa"], atributos["agilidade"]]
+    print(lista_retorno)
 
-    print("""
-                                -------------------
-                                 ROLANDO ATRIBUTOS
-                                -------------------
-            Agora vamos rolar seus 3 atributos de habilidades, sendo eles:
-            -Ataque (Será utilizado para definir o valor de seu dano, somando mais ao bonus de armas que você utilizar)
-            -Defesa (Será utilizado para definir o valor de sua esquiva ao ser atacado, somando mais ao bonus de armaduras que utilizar)
-            -Agilidade (Será utilizado para definir a ordem de ação em combante, somando mais ao bonus de itens que utilizar)
-          
-            No final, seus Pontos de Vida serão definidos pela média de seus atributos mais 10 pontos.
-
-
-          """)
-
-        
-                
- 
-
-    ponto_bonus = 8
-    base_ataque = None
-    base_defesa = None
-    base_agili = None
+    
+    
 
 Criar_Personagem()
     
