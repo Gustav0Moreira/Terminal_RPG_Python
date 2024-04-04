@@ -4,10 +4,17 @@ import math
 
 
 class Player(object):
+<<<<<<< Updated upstream
     def __init__(self, name, attack, hp_base, defense, agil):
+=======
+    def __init__(self, hp_base, name, attack, defense, agil):
+        self.hp_base = hp_base
+        
+
+>>>>>>> Stashed changes
         self.name = name
         self.attack = attack
-        self.hp_base = hp_base
+        
         self.defense = defense
         self.agil = agil
 
@@ -17,16 +24,28 @@ class Player(object):
         return atual_hp
         
 
-    def Status(self):
-        print("""
-              Status do Personagem:
-              -----------------
-              HP: %s
-              Nome: %s
-              Ataque: %s
-              Defesa: %s
-              Agilidade %s
-              """ %(self.hp_base, self.name, self.attack, self.defense, self.agil))
+    def Status(self, a, hp):
+        self.hp = hp
+
+        if a == 1:
+            print("""
+                Status do Personagem:
+                -----------------
+                HP: %s/%s
+                Nome: %s
+                Ataque: %s
+                Defesa: %s
+                Agilidade %s
+                """ %(self.hp, self.hp_base, self.name, self.attack, self.defense, self.agil))
+        elif a == 2:
+            print("""
+                Status do Personagem:
+                -----------------
+                HP: %s/%s
+                Nome: %s
+                """ %(self.hp, self.hp_base, self.name))
+        else:
+            print("Opção inválida")
     
     def Curar(self, bonus):
         
@@ -335,6 +354,7 @@ def Criar_Personagem():
                     else:
                         print("Digite um número válido.")
         return dic_atributos
+<<<<<<< Updated upstream
 
 
                             
@@ -386,5 +406,30 @@ def Criar_Personagem():
 
 Criar_Personagem()
     
+=======
+    nome = Nome()
+    atributos = Skills()
+    lista_retorno = [atributos["pontos de vida"], nome, atributos["ataque"], atributos["defesa"], atributos["agilidade"]]
+    return lista_retorno
 
+
+
+def Menu():
+    pass
+
+def Batalha():
+    control_batalha = True
+    #control_turno = True
+    
+    print("---!!DESAFIO IMINENTE!!---")
+    while control_batalha:
+        
+>>>>>>> Stashed changes
+
+
+#/--/--/--/--/--/-Criação-de-Personagem-/--/--/--/--/--/    
+atributo = Criar_Personagem()
+p1 = Player(atributo[0], atributo[1], atributo[2], atributo[3], atributo[4])
+
+Batalha()
 
