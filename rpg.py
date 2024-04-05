@@ -15,8 +15,9 @@ class Player(object):
         self.agil = agil
 
 
-    def Dano_vida(self, dano):
-        atual_hp = dano - self.hp_base
+    def Dano_vida(self, hp, dano, shield):
+        sh_dano = dano - shield
+        atual_hp = sh_dano - hp
         return atual_hp
         
 
@@ -394,17 +395,111 @@ def Menu():
 def Batalha():
     control_batalha = True
     #control_turno = True
+
+    #--/--/--/--/--/--/--Jogador
+    p1bhp, p1hp, p1n, p1a, p1d, p1ag = p1.hp_base, p1.hp_base, p1.name, p1.attack, p1.defense, p1.agil
     
-    print("---!!DESAFIO IMINENTE!!---")
+    #--/--/--/--/--/--/--Inimigo
+    lista_nome_inimigo = ["Grogs o Goblin", "Ozi o Slime", "Cacaro o Ladrão", "Licandro o Lobisomem"]
+    inimigo = Enemy(lista_nome_inimigo[random.randint(0,3)], random.randint(1,6), random.randint(10,20), random.randint(1,6), random.randint(1,6))
+    e1bhp, e1hp, e1n, e1a, e1d, e1ag = inimigo.hp_base, inimigo.hp_base, inimigo.name, inimigo.attack, inimigo.defense, inimigo.agil
+    escudo_p = 0
+    escudo_i = 0
+    
+    print("!---!DESAFIO IMINENTE!---!")
     while control_batalha:
-        pass
+        if p1ag > e1ag:
+            print("\n/-/-/-/-Turno do Jogador-/-/-/-/\n")
+            try:
+                decisao = int(input("\nQual ação deseja efetuar?: \n1 - Atacar \n2 - Defender \n3 - Fugir \n4 - Status\n"))
+            except ValueError:
+                print("Digite um número entre 1,2 e 3")
+            except Exception as error:
+                print(error)
+                print("Ação inválida")
+            else:
+                if decisao == 1:
+                    print("\nVocê ataca o inimigo e...\n")
+                    time.sleep(3)
+                    acerto_pj = Dado()
+                    if acerto_pj >= e1d:
+                        print("\n...Você acerta o inimigo!\n")
+                        dano = p1.Atacar()
+                        print("\nCausou %s de dano!\n" %(dano))
+                        cal_dano = inimigo.Dano_vida(e1hp, dano, escudo_i)
+                        e1hp = cal_dano
+                        inimigo.Status(2, e1hp)
+                        escudo_i = 0
+                        time.sleep(3)
+                        if e1hp > 0:
+                            print("\n/-/-/-/-Turno do Inimigo-/-/-/-/\n")
+                            decisao_inimigo = random.randint(1,2)
+                            if decisao_inimigo == 1:
+                                time.sleep(1)
+                                print("\nO Inimigo ataca você...\n")
+                                time.sleep(3)
+                                acerto_inimigo = Dado()
+                                if acerto_inimigo >= p1d:
+                                    print("\n...O inimigo te acerta!\n")
+                                    dano_inimigo = inimigo.Atacar()
+                                    print("\nCausou %s de dano!\n" %(dano_inimigo))
+                                    p1hp = dano - p1hp
+                                    p1.Status(2, p1hp)
+                                else:
+                                    print("\n...O inimigo não te acerta!\n")
+                                    time.sleep(1)
+                            else:
+                                time.sleep(1)
+                                print("\n...O inimigo decide se defender...\n")
+                                escudo_i = 5
+                                time.sleep(3)
+                        else:
+                            print("\n!---Vitória do jogador---!\n")
+                            control_batalha = False
+                    else:
+                        print("\n...Você erra o golpe no inimigo...\n")
+                        time.sleep(1)
+                        if e1hp > 0:
+                            print("\n/-/-/-/-Turno do Inimigo-/-/-/-/\n")
+                            decisao_inimigo = random.randint(1,2)
+                            if decisao_inimigo == 1:
+                                time.sleep(1)
+                                print("\nO Inimigo ataca você...\n")
+                                time.sleep(3)
+                                acerto_inimigo = Dado()
+                                if acerto_inimigo >= p1d:
+                                    print("\n...O inimigo te acerta!\n")
+                                    dano_inimigo = inimigo.Atacar()
+                                    print("\nCausou %s de dano!\n" %(dano_inimigo))
+                                    p1hp = dano - p1hp
+                                    p1.Status(2, p1hp)
+                                else:
+                                    print("\n...O inimigo não te acerta!\n")
+                                    time.sleep(1)
+                        else:
+                            print("\n!---Vitória do jogador---!\n")
+                            control_batalha = False
+                
+                elif decisao == 2:
+
+                elif decisao == 3:
+                
+                elif decisao == 4:
+                
+                else:
+                    print("Digite uma opção válida")
+        else:
+
+
+                            
+
+
         
 
 
 #/--/--/--/--/--/-Criação-de-Personagem-/--/--/--/--/--/    
 atributo = Criar_Personagem()
 p1 = Player(atributo[0], atributo[1], atributo[2], atributo[3], atributo[4])
-p1.Status(1, atributo[0])
 
 #Batalha()
 
