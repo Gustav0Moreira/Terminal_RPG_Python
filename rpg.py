@@ -16,8 +16,8 @@ class Player(object):
 
 
     def Dano_vida(self, hp, dano, shield):
-        sh_dano = dano - shield
-        atual_hp = sh_dano - hp
+        sh_dano = int(dano - shield)
+        atual_hp = int(sh_dano - hp)
         return atual_hp
         
 
@@ -51,8 +51,8 @@ class Player(object):
         return cura
 
 
-    def Atacar(self, bonus):
-        dano = bonus + self.attack
+    def Atacar(self):
+        dano = self.attack
         return dano
 
 
@@ -397,15 +397,18 @@ def Batalha():
     #control_turno = True
 
     #--/--/--/--/--/--/--Jogador
-    p1bhp, p1hp, p1n, p1a, p1d, p1ag = p1.hp_base, p1.hp_base, p1.name, p1.attack, p1.defense, p1.agil
+    p1hp, p1d, p1ag = int(p1.hp_base), p1.defense, p1.agil
     
     #--/--/--/--/--/--/--Inimigo
     lista_nome_inimigo = ["Grogs o Goblin", "Ozi o Slime", "Cacaro o Ladrão", "Licandro o Lobisomem"]
-    inimigo = Enemy(lista_nome_inimigo[random.randint(0,3)], random.randint(1,6), random.randint(10,20), random.randint(1,6), random.randint(1,6))
-    e1bhp, e1hp, e1n, e1a, e1d, e1ag = inimigo.hp_base, inimigo.hp_base, inimigo.name, inimigo.attack, inimigo.defense, inimigo.agil
+    inimigo = Enemy(random.randint(10,20), lista_nome_inimigo[random.randint(0,3)], random.randint(1,6), random.randint(1,6), random.randint(1,6))
+    e1hp, e1d, e1ag = int(inimigo.hp_base), inimigo.defense, inimigo.agil
     escudo_p = 0
     escudo_i = 0
     
+    p1.Status(1, p1hp)
+    inimigo.Status(1, e1hp2)
+
     print("!---!DESAFIO IMINENTE!---!")
     while control_batalha:
         if p1ag > e1ag:
@@ -426,8 +429,8 @@ def Batalha():
                         print("\n...Você acerta o inimigo!\n")
                         dano = p1.Atacar()
                         print("\nCausou %s de dano!\n" %(dano))
-                        cal_dano = inimigo.Dano_vida(e1hp, dano, escudo_i)
-                        e1hp = cal_dano
+                        cal_dano_i = inimigo.Dano_vida(e1hp, dano, escudo_i)
+                        e1hp = cal_dano_i
                         inimigo.Status(2, e1hp)
                         escudo_i = 0
                         time.sleep(3)
@@ -443,8 +446,14 @@ def Batalha():
                                     print("\n...O inimigo te acerta!\n")
                                     dano_inimigo = inimigo.Atacar()
                                     print("\nCausou %s de dano!\n" %(dano_inimigo))
-                                    p1hp = dano - p1hp
+                                    cal_dano_p = p1.Dano_vida(p1hp, dano_inimigo, escudo_p)
+                                    p1hp = cal_dano_p
                                     p1.Status(2, p1hp)
+                                    escudo_p = 0
+                                    if p1hp <= 0:
+                                        time.sleep(1)
+                                        print("Seu personagem não aguentou...")
+                                        control_batalha = False
                                 else:
                                     print("\n...O inimigo não te acerta!\n")
                                     time.sleep(1)
@@ -471,24 +480,260 @@ def Batalha():
                                     print("\n...O inimigo te acerta!\n")
                                     dano_inimigo = inimigo.Atacar()
                                     print("\nCausou %s de dano!\n" %(dano_inimigo))
-                                    p1hp = dano - p1hp
+                                    cal_dano_p = p1.Dano_vida(p1hp, dano_inimigo, escudo_p)
+                                    p1hp = cal_dano_p
                                     p1.Status(2, p1hp)
+                                    escudo_p = 0
+                                    if p1hp <= 0:
+                                        time.sleep(1)
+                                        print("Seu personagem não aguentou...")
+                                        control_batalha = False
                                 else:
                                     print("\n...O inimigo não te acerta!\n")
                                     time.sleep(1)
+                            else:
+                                time.sleep(1)
+                                print("\n...O inimigo decide se defender...\n")
+                                escudo_i = 5
+                                time.sleep(3)
                         else:
                             print("\n!---Vitória do jogador---!\n")
                             control_batalha = False
                 
                 elif decisao == 2:
+                    time.sleep(1)
+                    print("Você se defende...")
+                    escudo_p = 5
+                    if e1hp > 0:
+                            print("\n/-/-/-/-Turno do Inimigo-/-/-/-/\n")
+                            decisao_inimigo = random.randint(1,2)
+                            if decisao_inimigo == 1:
+                                time.sleep(1)
+                                print("\nO Inimigo ataca você...\n")
+                                time.sleep(3)
+                                acerto_inimigo = Dado()
+                                if acerto_inimigo >= p1d:
+                                    print("\n...O inimigo te acerta!\n")
+                                    dano_inimigo = inimigo.Atacar()
+                                    print("\nCausou %s de dano!\n" %(dano_inimigo))
+                                    cal_dano_p = p1.Dano_vida(p1hp, dano_inimigo, escudo_p)
+                                    p1hp = cal_dano_p
+                                    p1.Status(2, p1hp)
+                                    escudo_p = 0
+                                    if p1hp <= 0:
+                                        time.sleep(1)
+                                        print("Seu personagem não aguentou...")
+                                        control_batalha = False
+                                else:
+                                    print("\n...O inimigo não te acerta!\n")
+                                    time.sleep(1)
+                            else:
+                                time.sleep(1)
+                                print("\n...O inimigo decide se defender...\n")
+                                escudo_i = 5
+                                time.sleep(3)
+                    else:
+                        print("\n!---Vitória do jogador---!\n")
+                        control_batalha = False
 
                 elif decisao == 3:
-                
+                    time.sleep(1)
+                    print("...Você tenta fugir...")
+                    time.sleep(3)
+                    fuga_dado = Dado()
+                    if fuga_dado >= 4:
+                        print("...Você escapa!")
+                        control_batalha = False
+                    else:
+                        print("...Sua fuga falha...")
+                        time.sleep(1)
+
                 elif decisao == 4:
+                    time.sleep(3)
+                    p1.Status(2, p1hp)
                 
                 else:
                     print("Digite uma opção válida")
         else:
+            print("\n/-/-/-/-Turno do Inimigo-/-/-/-/\n")
+            decisao_inimigo = random.randint(1,2)
+            if decisao_inimigo == 1:
+                time.sleep(1)
+                print("\nO Inimigo ataca você...\n")
+                time.sleep(3)
+                acerto_inimigo = Dado()
+                if acerto_inimigo >= p1d:
+                    print("\n...O inimigo te acerta!\n")
+                    dano_inimigo = inimigo.Atacar()
+                    print("\nCausou %s de dano!\n" %(dano_inimigo))
+                    cal_dano_p = p1.Dano_vida(p1hp, dano_inimigo, escudo_p)
+                    p1hp = cal_dano_p
+                    p1.Status(2, p1hp)
+                    escudo_p = 0
+                    if p1hp <= 0:
+                        time.sleep(1)
+                        print("Seu personagem não aguentou...")
+                        control_batalha = False
+                    else:
+                        print("\n/-/-/-/-Turno do Jogador-/-/-/-/\n")
+                        try:
+                            decisao = int(input("\nQual ação deseja efetuar?: \n1 - Atacar \n2 - Defender \n3 - Fugir \n4 - Status\n"))
+                        except ValueError:
+                            print("Digite um número entre 1,2 e 3")
+                        except Exception as error:
+                            print(error)
+                            print("Ação inválida")
+                        else:
+                            if decisao == 1:
+                                print("\nVocê ataca o inimigo e...\n")
+                                time.sleep(3)
+                                acerto_pj = Dado()
+                                if acerto_pj >= e1d:
+                                    print("\n...Você acerta o inimigo!\n")
+                                    dano = p1.Atacar()
+                                    print("\nCausou %s de dano!\n" %(dano))
+                                    cal_dano_i = inimigo.Dano_vida(e1hp, dano, escudo_i)
+                                    e1hp = cal_dano_i
+                                    inimigo.Status(2, e1hp)
+                                    escudo_i = 0
+                                    time.sleep(3)
+                                    if e1hp < 0:
+                                        print("\n!---Vitória do jogador---!\n")
+                                        control_batalha = False
+                                else:
+                                    print("\n...O inimigo não te acerta!\n")
+                                    time.sleep(1)
+                            elif decisao == 2:
+                                time.sleep(1)
+                                print("Você se defende...")
+                                escudo_p = 5
+                            elif decisao == 3:
+                                time.sleep(1)
+                                print("...Você tenta fugir...")
+                                time.sleep(3)
+                                fuga_dado = Dado()
+                                if fuga_dado >= 4:
+                                    print("...Você escapa!")
+                                    control_batalha = False
+                                else:
+                                    print("...Sua fuga falha...")
+                                    time.sleep(1)
+
+                            elif decisao == 4:
+                                time.sleep(3)
+                                p1.Status(2, p1hp)
+                            
+                            else:
+                                print("Digite uma opção válida")
+                else:
+                    print("\n...O inimigo não te acerta!\n")
+                    time.sleep(1)
+                    print("\n/-/-/-/-Turno do Jogador-/-/-/-/\n")
+                    try:
+                        decisao = int(input("\nQual ação deseja efetuar?: \n1 - Atacar \n2 - Defender \n3 - Fugir \n4 - Status\n"))
+                    except ValueError:
+                        print("Digite um número entre 1,2 e 3")
+                    except Exception as error:
+                        print(error)
+                        print("Ação inválida")
+                    else:
+                        if decisao == 1:
+                            print("\nVocê ataca o inimigo e...\n")
+                            time.sleep(3)
+                            acerto_pj = Dado()
+                            if acerto_pj >= e1d:
+                                print("\n...Você acerta o inimigo!\n")
+                                dano = p1.Atacar()
+                                print("\nCausou %s de dano!\n" %(dano))
+                                cal_dano_i = inimigo.Dano_vida(e1hp, dano, escudo_i)
+                                e1hp = cal_dano_i
+                                inimigo.Status(2, e1hp)
+                                escudo_i = 0
+                                time.sleep(3)
+                                if e1hp < 0:
+                                    print("\n!---Vitória do jogador---!\n")
+                                    control_batalha = False
+                            else:
+                                print("\n...O inimigo não te acerta!\n")
+                                time.sleep(1)
+                        elif decisao == 2:
+                            time.sleep(1)
+                            print("Você se defende...")
+                            escudo_p = 5
+                        elif decisao == 3:
+                            time.sleep(1)
+                            print("...Você tenta fugir...")
+                            time.sleep(3)
+                            fuga_dado = Dado()
+                            if fuga_dado >= 4:
+                                print("...Você escapa!")
+                                control_batalha = False
+                            else:
+                                print("...Sua fuga falha...")
+                                time.sleep(1)
+
+                        elif decisao == 4:
+                            time.sleep(3)
+                            p1.Status(2, p1hp)
+                            
+                        else:
+                            print("Digite uma opção válida")
+            else:
+                time.sleep(1)
+                print("\n...O inimigo decide se defender...\n")
+                escudo_i = 5
+                time.sleep(3)
+                print("\n/-/-/-/-Turno do Jogador-/-/-/-/\n")
+                try:
+                    decisao = int(input("\nQual ação deseja efetuar?: \n1 - Atacar \n2 - Defender \n3 - Fugir \n4 - Status\n"))
+                except ValueError:
+                    print("Digite um número entre 1,2 e 3")
+                except Exception as error:
+                    print(error)
+                    print("Ação inválida")
+                else:
+                    if decisao == 1:
+                        print("\nVocê ataca o inimigo e...\n")
+                        time.sleep(3)
+                        acerto_pj = Dado()
+                        if acerto_pj >= e1d:
+                            print("\n...Você acerta o inimigo!\n")
+                            dano = p1.Atacar()
+                            print("\nCausou %s de dano!\n" %(dano))
+                            cal_dano_i = inimigo.Dano_vida(e1hp, dano, escudo_i)
+                            e1hp = cal_dano_i
+                            inimigo.Status(2, e1hp)
+                            escudo_i = 0
+                            time.sleep(3)
+                            if e1hp < 0:
+                                print("\n!---Vitória do jogador---!\n")
+                                control_batalha = False
+                        else:
+                            print("\n...O inimigo não te acerta!\n")
+                            time.sleep(1)
+                    elif decisao == 2:
+                        time.sleep(1)
+                        print("Você se defende...")
+                        escudo_p = 5
+                    elif decisao == 3:
+                        time.sleep(1)
+                        print("...Você tenta fugir...")
+                        time.sleep(3)
+                        fuga_dado = Dado()
+                        if fuga_dado >= 4:
+                            print("...Você escapa!")
+                            control_batalha = False
+                        else:
+                            print("...Sua fuga falha...")
+                            time.sleep(1)
+
+                    elif decisao == 4:
+                        time.sleep(3)
+                        p1.Status(2, p1hp)
+                            
+                    else:
+                        print("Digite uma opção válida")
+
 
 
                             
@@ -500,6 +745,8 @@ def Batalha():
 #/--/--/--/--/--/-Criação-de-Personagem-/--/--/--/--/--/    
 atributo = Criar_Personagem()
 p1 = Player(atributo[0], atributo[1], atributo[2], atributo[3], atributo[4])
+
+Batalha()
 
 #Batalha()
 
