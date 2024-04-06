@@ -17,7 +17,7 @@ class Player(object):
 
     def Dano_vida(self, hp, dano, shield):
         sh_dano = int(dano - shield)
-        atual_hp = int(sh_dano - hp)
+        atual_hp = int(hp - sh_dano )
         return atual_hp
         
 
@@ -382,6 +382,7 @@ def Criar_Personagem():
                     else:
                         print("Digite um número válido.")
         return dic_atributos
+   
     nome = Nome()
     atributos = Skills()
     lista_retorno = [atributos["pontos de vida"], nome, atributos["ataque"], atributos["defesa"], atributos["agilidade"]]
@@ -407,7 +408,7 @@ def Batalha():
     escudo_i = 0
     
     p1.Status(1, p1hp)
-    inimigo.Status(1, e1hp2)
+    inimigo.Status(1, e1hp)
 
     print("!---!DESAFIO IMINENTE!---!")
     while control_batalha:
@@ -466,7 +467,7 @@ def Batalha():
                             print("\n!---Vitória do jogador---!\n")
                             control_batalha = False
                     else:
-                        print("\n...Você erra o golpe no inimigo...\n")
+                        print("\n...Você erra o golpe...\n")
                         time.sleep(1)
                         if e1hp > 0:
                             print("\n/-/-/-/-Turno do Inimigo-/-/-/-/\n")
@@ -601,7 +602,7 @@ def Batalha():
                                         print("\n!---Vitória do jogador---!\n")
                                         control_batalha = False
                                 else:
-                                    print("\n...O inimigo não te acerta!\n")
+                                    print("\n...Você erra o golpe...\n")
                                     time.sleep(1)
                             elif decisao == 2:
                                 time.sleep(1)
@@ -654,7 +655,7 @@ def Batalha():
                                     print("\n!---Vitória do jogador---!\n")
                                     control_batalha = False
                             else:
-                                print("\n...O inimigo não te acerta!\n")
+                                print("\n...Você erra o golpe...\n")
                                 time.sleep(1)
                         elif decisao == 2:
                             time.sleep(1)
@@ -709,7 +710,7 @@ def Batalha():
                                 print("\n!---Vitória do jogador---!\n")
                                 control_batalha = False
                         else:
-                            print("\n...O inimigo não te acerta!\n")
+                            print("\n...Você erra o golpe...\n")
                             time.sleep(1)
                     elif decisao == 2:
                         time.sleep(1)
